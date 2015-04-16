@@ -19,10 +19,10 @@
  *
 */
 
-var Attitude = function(x, y, z, timestamp) {
-    this.x = x;
-    this.y = y;
-    this.z = z;
+var Attitude = function(alpha, beta, gamma, timestamp) {
+    this.alpha = alpha;
+    this.beta  = beta;
+    this.gamma = gamma;
     this.timestamp = timestamp || (new Date()).getTime();
 };
 

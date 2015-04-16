@@ -38,9 +38,9 @@
 {
     self = [super init];
     if (self) {
-        x = 0;
-        y = 0;
-        z = 0;
+        roll = 0;
+        pitch = 0;
+        yaw = 0;
         timestamp = 0;
         self.callbackId = nil;
         self.isRunning = NO;
@@ -70,11 +70,11 @@
         [self.motionManager setDeviceMotionUpdateInterval:updateInterval];  // expected in seconds
         __weak CDVMotion* weakSelf = self;
         [self.motionManager startDeviceMotionUpdatesToQueue:[NSOperationQueue mainQueue] withHandler:^(CMDeviceMotion *deviceMotionData, NSError *error) {
-            x = GLKMathRadiansToDegrees(deviceMotionData.attitude.roll);
-            y = GLKMathRadiansToDegrees(deviceMotionData.attitude.pitch);
-            z = GLKMathRadiansToDegrees(deviceMotionData.attitude.yaw);
+            roll  = GLKMathRadiansToDegrees(deviceMotionData.attitude.roll);
+            pitch = GLKMathRadiansToDegrees(deviceMotionData.attitude.pitch);
+            yaw   = GLKMathRadiansToDegrees(deviceMotionData.attitude.yaw);
             timestamp = ([[NSDate date] timeIntervalSince1970] * 1000);
-            [weakSelf returnCompassInfo];
+            [weakSelf returnAttitudeInfo];
         }];
 
         if (!self.isRunning) {
@@ -94,24 +94,24 @@
     if ([self.motionManager isDeviceMotionAvailable] == YES) {
         if (self.haveReturnedResult == NO){
             // block has not fired before stop was called, return whatever result we currently have
-            [self returnCompassInfo];
+            [self returnAttitudeInfo];
         }
         [self.motionManager stopDeviceMotionUpdates];
     }
     self.isRunning = NO;
 }
 
-- (void)returnCompassInfo
+- (void)returnAttitudeInfo
 {
-    // Create an acceleration object
-    NSMutableDictionary* compassProps = [NSMutableDictionary dictionaryWithCapacity:4];
+    // Create an attitude object
+    NSMutableDictionary* attitudeProps = [NSMutableDictionary dictionaryWithCapacity:4];
 
-    [compassProps setValue:[NSNumber numberWithDouble:x] forKey:@"x"];
-    [compassProps setValue:[NSNumber numberWithDouble:y] forKey:@"y"];
-    [compassProps setValue:[NSNumber numberWithDouble:z] forKey:@"z"];
-    [compassProps setValue:[NSNumber numberWithDouble:timestamp] forKey:@"timestamp"];
+    [attitudeProps setValue:[NSNumber numberWithDouble:roll]  forKey:@"alpha"];
+    [attitudeProps setValue:[NSNumber numberWithDouble:pitch] forKey:@"beta"];
+    [attitudeProps setValue:[NSNumber numberWithDouble:yaw]   forKey:@"gamma"];
+    [attitudeProps setValue:[NSNumber numberWithDouble:timestamp] forKey:@"timestamp"];
 
-    CDVPluginResult* result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:compassProps];
+    CDVPluginResult* result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:attitudeProps];
     [result setKeepCallback:[NSNumber numberWithBool:YES]];
     [self.commandDelegate sendPluginResult:result callbackId:self.callbackId];
     self.haveReturnedResult = YES;
