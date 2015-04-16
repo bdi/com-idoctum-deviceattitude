@@ -43,9 +43,9 @@ These attitude values are returned to the `onSuccess` callback function.
 ### Example
 
     function onSuccess(attitude) {
-        alert('Attitude X: ' + attitude.x + '\n' +
-              'Attitude Y: ' + attitude.y + '\n' +
-              'Attitude Z: ' + attitude.z + '\n' +
+        alert('Attitude alpha: ' + attitude.alpha + '\n' +
+              'Attitude beta:  ' + attitude.beta  + '\n' +
+              'Attitude gamma: ' + attitude.gamma + '\n' +
               'Timestamp: '  + attitude.timestamp + '\n');
     };
 
@@ -70,9 +70,9 @@ ID can be used with `navigator.devicemotion.clearWatch` to stop watching the nav
 
     function onSuccess(attitude) {
         var element = document.getElementById('attitude');
-        element.innerHTML = 'Attitude X: ' + attitude.x + '<br>' +
-                            'Attitude Y: ' + attitude.y + '<br>' +
-                            'Attitude Z: ' + attitude.z + '<br>' +
+        element.innerHTML = 'Attitude alpha: ' + attitude.alpha + '<br>' +
+                            'Attitude beta:  ' + attitude.beta  + '<br>' +
+                            'Attitude gamma: ' + attitude.gamma + '<br>' +
                             'Timestamp: '  + attitude.timestamp + '<br>';
     };
 
@@ -112,11 +112,11 @@ An `attitude` object is returned to the `onSuccess` callback function.
 
 ### Properties
 
-- __x__: The roll of the device, in degree. _(Number)_
+- __alpha__: The roll of the device, in degree. _(Number)_
 
-- __y__: The pitch of the device, in degree. _(Number)_
+- __beta__: The pitch of the device, in degree. _(Number)_
 
-- __z__: The yaw of the device, in degree. _(Number)_
+- __gamma__: The yaw of the device, in degree. _(Number)_
 
 - __timestamp__: The time at which this attitude was determined.  _(milliseconds)_
 
